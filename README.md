@@ -15,6 +15,7 @@ npm install https://github.com/foreveryang321/hexo-asset-image.git --save
 # Example
 
 > 同时使用hexo-abbrlink
+
 ```yaml
 root: /
 permalink: posts/:abbrlink.html
@@ -24,6 +25,7 @@ abbrlink:
 ```
 
 > 目录结构
+
 ```shell
 MacGesture2-Publish
 ├── apppicker.jpg
@@ -33,6 +35,7 @@ MacGesture2-Publish.md
 ```
 
 > 用法
+
 Make sure `post_asset_folder: true` in your `_config.yml`.
 
 Just use `![logo](logo.jpg)` Or `![logo](MacGesture2-Publish/logo.jpg)` Or `{% asset_img logo.jpg %}` to insert `logo.jpg`
