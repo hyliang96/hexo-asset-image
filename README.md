@@ -16,6 +16,7 @@ npm install https://github.com/foreveryang321/hexo-asset-image.git --save
 
 > 同时使用hexo-abbrlink
 ```yaml
+root: /
 permalink: posts/:abbrlink.html
 abbrlink:
   alg: crc32  # 算法：crc16(default) and crc32
@@ -31,10 +32,7 @@ MacGesture2-Publish
 MacGesture2-Publish.md
 ```
 
+> 用法
 Make sure `post_asset_folder: true` in your `_config.yml`.
 
-Just use `![logo](logo.jpg)` to insert `logo.jpg`.
-
-Or
-
-`![logo](MacGesture2-Publish/logo.jpg)` to insert `logo.jpg`.
+Just use `![logo](logo.jpg)` Or `![logo](MacGesture2-Publish/logo.jpg)` Or `{% asset_img logo.jpg %}` to insert `logo.jpg`
