@@ -13,6 +13,7 @@ hexo.extend.filter.register('after_post_render', function(data) {
         var beginPos = getPosition(link, '/', 3) + 1;
         // In hexo 3.1.1, the permalink of "about" page is like ".../about/index.html".
         var endPos = link.lastIndexOf('/') + 1;
+        var filename = link.substring(endPos);
         link = link.substring(beginPos, endPos);
 
         var toprocess = ['excerpt', 'more', 'content'];
@@ -50,8 +51,10 @@ hexo.extend.filter.register('after_post_render', function(data) {
 
                     var root = config.root && config.root.endsWith('/') ? config.root : '/'
 
+                    var link_cut = link.substring(0, link.length - 1);
+                    var final_dir = link_cut.substring(link_cut.lastIndexOf('/') + 1);
                     var abbrlink = data.abbrlink;
-                    if (abbrlink) {
+                    if (filename==abbrlink+'.html' || final_dir==abbrlink) {
                         if (src.indexOf(abbrlink) > -1) {
                             // 使用 hexo asset_img：{% asset_img 20190522103754.jpg %}
 
@@ -72,7 +75,12 @@ hexo.extend.filter.register('after_post_render', function(data) {
                             if (src.indexOf('/') > -1) {
                               src = src.substring(src.lastIndexOf('/') + 1);
                             }
-                            $(this).attr(src_key, root + link + abbrlink + '/' + src);
+                            if (final_dir == abbrlink) {
+                                $(this).attr(src_key, root + link + src);
+                            }
+                            else {
+                                $(this).attr(src_key, root + link + abbrlink + '/' + src);
+                            }
                         }
                     } else {
                         $(this).attr(src_key, root + link + src);
