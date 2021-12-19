@@ -6,7 +6,6 @@
 
 本插件是基于官方插件的修改，为了兼容`hexo-abbrlink`插件
 
-
 Give asset image in hexo a absolutely path automatically
 
 # Usege
@@ -21,7 +20,7 @@ npm install https://github.com/foreveryang321/hexo-asset-image.git --save
 
 ```yaml
 root: /
-permalink: posts/:abbrlink.html
+permalink: posts/:abbrlink.html # 或 posts/:abbrlink/ 或 :abbrlink.html 或 :abbrlink/ ， 只要结尾是 :abbrlink.html 或 :abbrlink/ 接支持
 abbrlink:
   alg: crc32  # 算法：crc16(default) and crc32
   rep: hex    # 进制：dec(default) and hex
