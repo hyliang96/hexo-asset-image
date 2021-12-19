@@ -27,8 +27,14 @@ hexo.extend.filter.register('after_post_render', function(data) {
             });
 
             $('img').each(function() {
+                let src_key = ''
+                if ($(this).attr('src')) {
+                    src_key = 'src'
+                } else if ($(this).attr('data-src')) {
+                    src_key = 'data-src'
+                }
                 // For windows style path, we replace '\' to '/'.
-                var src = $(this).attr('src').replace('\\', '/');
+                var src = $(this).attr(src_key).replace('\\', '/');
                 if (!/http[s]*.*|\/\/.*/.test(src)) {
                     // For "about" page, the first part of "src" can't be removed.
                     // In addition, to support multi-level local directory.
@@ -53,7 +59,7 @@ hexo.extend.filter.register('after_post_render', function(data) {
                             // link = posts/
                             // abbrlink = d6d2f549
                             // src = d6d2f549/20190522103754.jpg
-                            $(this).attr('src', root + link + src);
+                            $(this).attr(src_key, root + link + src);
                         } else {
                             // 使用 markdown 标准语法：![图片](title/20190522103754.jpg)
                             // 或者 typora 其中一个用法：![图片](20190522103754.jpg)
@@ -66,10 +72,10 @@ hexo.extend.filter.register('after_post_render', function(data) {
                             if (src.indexOf('/') > -1) {
                               src = src.substring(src.lastIndexOf('/') + 1);
                             }
-                            $(this).attr('src', root + link + abbrlink + '/' + src);
+                            $(this).attr(src_key, root + link + abbrlink + '/' + src);
                         }
                     } else {
-                        $(this).attr('src', root + link + src);
+                        $(this).attr(src_key, root + link + src);
                     }
                 }
             });
