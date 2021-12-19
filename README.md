@@ -1,4 +1,7 @@
 # hexo-asset-image
+
+支持hexo5。
+
 官方`hexo-asset-image`插件，在同时使用`hexo-abbrlink`时，会导致图片路径错误。
 
 本插件是基于官方插件的修改，为了兼容`hexo-abbrlink`插件
