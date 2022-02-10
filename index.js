@@ -1,12 +1,49 @@
 'use strict';
 var cheerio = require('cheerio');
+var fs = require('hexo-fs');
 
 // http://stackoverflow.com/questions/14480345/how-to-get-the-nth-occurrence-in-a-string
 function getPosition(str, m, i) {
     return str.split(m, i).join(m).length;
 }
 
+// support .textbundle
+hexo.config.skip_render.push('**/*.textbundle/info.json', '*.textbundle/info.json')
+
 hexo.extend.filter.register('after_post_render', function(data) {
+
+    // support .textbundle
+    var path_split = data.source.split('/');
+    if (path_split.length - 2 >= 0) {
+        let last2 = path_split[path_split.length - 2];
+        const endPort2 = last2.lastIndexOf('.');
+        var last2tail = ''
+        var last2front = ''
+        if (endPort2 > -1) {
+            last2tail = last2.substring(endPort2 + 1);
+            last2front = last2.substring(0, endPort2);
+        }
+        if (last2tail == 'textbundle'){
+            var last = data.full_source.lastIndexOf('/');
+            var textbundle_path = data.full_source.substring(0, last);
+            var assets_path = textbundle_path + '/assets'
+            var text_path = textbundle_path + '/text'
+            fs.stat(assets_path, (assets_err, assets_stats) => {
+            if(assets_stats && assets_stats.isDirectory()) {
+                fs.stat(text_path, (text_err, text_stats) => {
+                if(!text_stats) {
+                    fs.symlink(assets_path, text_path, (err) => {
+                        if (err) throw err;
+                        console.log('symlink: text -> assets: '+textbundle_path);
+                    });
+                }
+                });
+            }
+            });
+        }
+    }
+
+
     var config = hexo.config;
     if (config.post_asset_folder) {
         var link = data.permalink;
@@ -15,14 +52,14 @@ hexo.extend.filter.register('after_post_render', function(data) {
         var endPos = link.lastIndexOf('/') + 1;
         var filename = link.substring(endPos);
         link = link.substring(beginPos, endPos);
-        
+
         // permalink | posts/:abbrlink/ | posts/:abbrlink.html |
         // filename  | index.html       | d6d2f549             |
         // link      | posts/d6d2f549/  | post/                |
         //
         // img format| {% asset_img 20190522103754.jpg %}| ![](xxx.jpg) | ![](title/xxx.jpg) |
         // img src   | d6d2f549/xxx.jpg                  | xxx.jpg      | title/xxx.jpg      |
-        
+
         var toprocess = ['excerpt', 'more', 'content'];
         for (var i = 0; i < toprocess.length; i++) {
             var key = toprocess[i];
