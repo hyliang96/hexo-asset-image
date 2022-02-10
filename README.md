@@ -2,6 +2,8 @@
 
 支持hexo5。
 
+支持`.textbundle`文件格式，这是一个macOS上显示为文件的文件夹，内含markdown文件和assets（图片等附件）。
+
 官方`hexo-asset-image`插件，在同时使用`hexo-abbrlink`时，会导致图片路径错误。
 
 本插件是基于官方插件的修改，为了兼容`hexo-abbrlink`插件
