@@ -15,7 +15,14 @@ hexo.extend.filter.register('after_post_render', function(data) {
         var endPos = link.lastIndexOf('/') + 1;
         var filename = link.substring(endPos);
         link = link.substring(beginPos, endPos);
-
+        
+        // permalink | posts/:abbrlink/ | posts/:abbrlink.html |
+        // filename  | index.html       | d6d2f549             |
+        // link      | posts/d6d2f549/  | post/                |
+        //
+        // img format| {% asset_img 20190522103754.jpg %}| ![](xxx.jpg) | ![](title/xxx.jpg) |
+        // img src   | d6d2f549/xxx.jpg                  | xxx.jpg      | title/xxx.jpg      |
+        
         var toprocess = ['excerpt', 'more', 'content'];
         for (var i = 0; i < toprocess.length; i++) {
             var key = toprocess[i];
