@@ -59,6 +59,7 @@ hexo.extend.filter.register('after_post_render', function(data) {
         //
         // img format| {% asset_img 20190522103754.jpg %}| ![](xxx.jpg) | ![](title/xxx.jpg) |
         // img src   | d6d2f549/xxx.jpg                  | xxx.jpg      | title/xxx.jpg      |
+        // 要求：`xxx.md`文件内引用的图像，必须在此md文件所在目录下与md文件同名文件夹`xxx/`内。
 
         var toprocess = ['excerpt', 'more', 'content'];
         for (var i = 0; i < toprocess.length; i++) {
