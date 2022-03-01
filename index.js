@@ -11,7 +11,7 @@ function getPosition(str, m, i) {
 hexo.config.skip_render.push('**/*.textbundle/info.json', '*.textbundle/info.json')
 
 hexo.extend.filter.register('after_post_render', function(data) {
-
+    this.log.i('Image Full source [ %s ]', data.full_source);
     // support .textbundle
     var path_split = data.source.split('/');
     if (path_split.length - 2 >= 0) {
@@ -31,12 +31,17 @@ hexo.extend.filter.register('after_post_render', function(data) {
             fs.stat(assets_path, (assets_err, assets_stats) => {
             if(assets_stats && assets_stats.isDirectory()) {
                 fs.stat(text_path, (text_err, text_stats) => {
-                if(!text_stats) {
-                    fs.symlink(assets_path, text_path, (err) => {
-                        if (err) throw err;
-                        console.log('symlink: text -> assets: '+textbundle_path);
-                    });
+                if(text_stats) {
+                    try {
+                        fs.unlinkSync(text_path) //file removed
+                    } catch(err) {
+                        console.error(err)
+                    }
                 }
+                fs.symlink('assets', text_path, (err) => {
+                    if (err) throw err;
+                    console.log('symlink: text -> assets: '+textbundle_path);
+                });
                 });
             }
             });
