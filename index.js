@@ -10,7 +10,7 @@ function getPosition(str, m, i) {
 // support .textbundle
 hexo.config.skip_render.push('**/*.textbundle/info.json', '*.textbundle/info.json')
 
-hexo.extend.filter.register('after_post_render', function(data) {
+hexo.extend.filter.register('before_post_render', function(data) {
     this.log.i('Image Full source [ %s ]', data.full_source);
     // support .textbundle
     var path_split = data.source.split('/');
@@ -47,8 +47,9 @@ hexo.extend.filter.register('after_post_render', function(data) {
             });
         }
     }
+});
 
-
+hexo.extend.filter.register('after_post_render', function(data) {
     var config = hexo.config;
     if (config.post_asset_folder) {
         var link = data.permalink;
